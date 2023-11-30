@@ -1,10 +1,17 @@
 import { Item } from "@/components/1.Dropdown";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const useDropdown = (items: Item[]) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
+  const dropdownRef = useRef(null);
+
+  const getAriaAttributes = () => ({
+    role: "combobox",
+    "aria-expanded": isOpen,
+    "aria-activedescendant": selectedItem ? selectedItem.text : undefined,
+  });
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     switch (e.key) {
@@ -18,7 +25,7 @@ const useDropdown = (items: Item[]) => {
   };
 
   const toggleDropdown = () => setIsOpen((isOpen) => !isOpen);
-
+  const updateSelectedItem = (item: Item) => {};
   return {
     isOpen,
     toggleDropdown,
@@ -26,6 +33,9 @@ const useDropdown = (items: Item[]) => {
     selectedItem,
     setSelectedItem,
     selectedIndex,
+    updateSelectedItem,
+    getAriaAttributes,
+    dropdownRef,
   };
 };
 
